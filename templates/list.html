@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    List
+{% endblock %}
+
+{% block main %}
+    <p>This is the List Birthdays feature!
+    {% if date %}
+    Listing all with the birthday <strong>{{ date }}</strong>.</p>
+    {% else %}
+    Start by selecting a date from the menus below.</p>
+    {% endif %}
+    <form id="dateform" action="/list" method="post">
+        <div class="form-group">
+            <select id="month" name="month" onchange="change_days('month')"></select>
+            <select id="day" name="day"></select>
+            <input id="submit" class="btn btn-primary" type="submit" value="List dates">
+        </div>
+    </form>
+    {% if rows %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Name</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows: %}
+                <tr><td>{{ row["b_date"] }}</td>
+                <td>{{ row["name"] }}</td>
+                <td>{{ row["b_year"] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

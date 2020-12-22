@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Compare
+{% endblock %}
+
+{% block main %}
+    <p>This is the Compare Birthdays feature!<br>Start by typing 2 names.</p>
+    <form id="nameform" action="/compare" method="post">
+        <div class="form-group">
+            Person 1: <input type="text" id="name1" name="name1" onkeyup="cksubmit()"></input><br>
+            Person 2: <input type="text" id="name2" name="name2" onkeyup="cksubmit()"></input><br>
+            <input id="submit" class="btn btn-primary" type="submit" value="Compare Birthdays" disabled>
+        </div>
+    </form>
+    {% if bday1 %}
+    <p>{{ name1 }}: {{ bday1 }}<br>{{ name2 }}: {{ bday2 }}</p>
+    <button onclick="howMuchOlder('{{ bday1 }}','{{ bday2 }}')">What's the age difference?</button>
+    <p id="message"></p>
+    {% endif %}
+
+<script>
+  $( function() {
+    var availableNames = "{{ ac_arr }}";
+    var name_array = availableNames.split(", ");
+    $( "#name1, #name2" ).autocomplete({
+      source: name_array
+    });
+  } );
+
+  function whosOlder(date1, date2){ //Example: Anne Frank: Jun 12, 1929, Anne Hathaway: Nov 12, 1982
+    //alert("whosOlder: "+Date.parse(date1)+" or "+Date.parse(date2));
+    var seconds1 = parseFloat(Date.parse(date1));
+    var seconds2 = parseFloat(Date.parse(date2));
+    var d1 = new Date(seconds1);
+    var d2 = new Date(seconds2);
+
+    if (d1 < d2) {
+      //alert("{{ name1 }} is older than {{ name2 }}.");
+      document.getElementById("message").innerHTML = "{{ name1 }} is older than {{ name2 }}.";
+    } else {
+      //alert("{{ name2 }} is older than {{ name1 }}.");
+      document.getElementById("message").innerHTML = "{{ name2 }} is older than {{ name1 }}.";
+    }
+  }
+
+  function howMuchOlder(date1, date2){
+    //alert("howMuchOlder: "+date1+" or "+date2);
+    var seconds1 = parseFloat(Date.parse(date1));
+    var seconds2 = parseFloat(Date.parse(date2));
+    var d1 = new Date(seconds1);
+    var d2 = new Date(seconds2);
+    var diff = 0;
+
+    if (d1 < d2) {
+      diff = seconds1 - seconds2;
+      document.getElementById("message").innerHTML = "{{ name1 }} is older than {{ name2 }} by ";
+    } else {
+      diff = seconds2 - seconds1;
+      document.getElementById("message").innerHTML = "{{ name2 }} is older than {{ name1 }} by ";
+    }
+
+    if (diff < 0){
+      diff *= -1;
+    }
+    document.getElementById("message").innerHTML += timeConversion(diff)+".";
+  }
+
+  function timeConversion(millisec) {
+        var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(0);
+        var months = (millisec / (1000 * 60 * 60 * 24 * 30)).toFixed(1);
+        var years = (millisec / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
+
+        if (days < 365) {
+            return "<br>" + days + " Days";
+        } else if (months < 12) {
+            return "about<br>" + months + " Months, or "+days + " Days";
+        } else {
+            return "about<br>" + years + " Years, or "+days + " Days";
+        }
+    }
+  </script>
+{% endblock %}

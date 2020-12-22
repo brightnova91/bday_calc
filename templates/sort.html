@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sort
+{% endblock %}
+
+{% block main %}
+    <p>This is the Sort Birthdays feature! Click a header to organize the table by that field.</p>
+    <form id="compdate" action="/sort" method="post" style="display:none">
+        <div class="form-group">
+            <input type="hidden" id="sortfield" name="sortfield" value="">
+            <input type="button" onclick="document.getElementById('compdate').submit();">
+            <!--<input id="submit" class="btn btn-primary" type="submit">-->
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><a href="#" onclick="sortfield('b_month')">Month</a></th>
+                <th><a href="#" onclick="sortfield('b_day')">Day</a></th>
+                <th><a href="#" onclick="sortfield('name')">Name</a></th>
+                <th><a href="#" onclick="sortfield('b_year')">Year</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows: %}
+                <tr><td>{{ row["b_date"][:3] }}</td>
+                <td>{{ row["b_day"] }}</td>
+                <td>{{ row["name"] }}</td>
+                <td>{{ row["b_year"] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

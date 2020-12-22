@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Zodiac
+{% endblock %}
+
+{% block main %}
+    <p><strong>Find out who shares your Zodiac sign!</strong></p>
+    <strong id="z_signs" onclick="change_zodiac('z_sign')">Astrological signs</strong> / <strong class="current" id="c_signs" onclick="change_zodiac('c_sign')">Chinese Zodiac</strong>
+    <form id="z_form" action="/signs" method="post">
+        <div class="form-group">
+            <input type="hidden" id="z_type" name="z_type" value="">
+            <input type="hidden" id="z_name" name="z_name" value="">
+            <select id="z_sign" name="z_sign" onchange="change_sign(this.id)">
+                <option value="">Pick a sign</option>
+                <option value="1,20-2,18">Aquarius</option>
+                <option value="2,19-3,20">Pisces</option>
+                <option value="3,21-4,19">Aries</option>
+                <option value="4,20-5,20">Taurus</option>
+                <option value="5,21-6,20">Gemini</option>
+                <option value="6,21-7,22">Cancer</option>
+                <option value="7,23-8,22">Leo</option>
+                <option value="8,23-9,22">Virgo</option>
+                <option value="9,23-10,22">Libra</option>
+                <option value="10,23-11,21">Scorpio</option>
+                <option value="11,22-12,21">Sagittarius</option>
+                <option value="12,22-1,19">Capricorn</option>
+            </select>
+            <select id="c_sign" name="c_sign" onchange="change_sign(this.id)">
+                <option value="">Pick a sign</option>
+                <option value="4">Rat</option>
+                <option value="5">Ox</option>
+                <option value="6">Tiger</option>
+                <option value="7">Rabbit</option>
+                <option value="8">Dragon</option>
+                <option value="9">Snake</option>
+                <option value="10">Horse</option>
+                <option value="11">Sheep</option>
+                <option value="0">Monkey</option>
+                <option value="1">Rooster</option>
+                <option value="2">Dog</option>
+                <option value="3">Pig</option>
+            </select>
+        </div>
+    </form>
+    {% if z_type %}
+        <div>Listing all with the <strong>{{ sign }}</strong> sign</strong>.</div>
+    {% else %}
+        <div>Start by selecting a sign from either the Astrological or Chinese zodiac.</div>
+    {% endif %}
+    {% if rows %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Name</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows: %}
+                <tr><td>{{ row["b_date"] }}</td>
+                <td>{{ row["name"] }}</td>
+                <td>{{ row["b_year"] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

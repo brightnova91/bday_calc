@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <p>Welcome to the Birthday Calculator! Start by selecting your birthday.</p>
+    <form id="dateform" action="/list" method="post">
+        <div class="form-group">
+            <select id="month" name="month" onchange="change_days('month')"></select>
+            <select id="day" name="day"></select>
+            <input id="submit" class="btn btn-primary" type="submit" value="List dates">
+        </div>
+    </form>
+    <header>Whose birthday is it today on <strong>{{ date }}, {{ year }}?</strong></header>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Name</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows: %}
+                <tr><td>{{ row["b_date"] }}</td>
+                <td>{{ row["name"] }}</td>
+                <td>{{ row["b_year"] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
